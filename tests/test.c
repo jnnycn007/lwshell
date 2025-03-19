@@ -48,6 +48,7 @@ static const test_str_t commands[] = {
     },
 };
 static uint32_t current_cmd_index;
+static int failed = 0;
 
 /**
  * \brief           Test command function
@@ -66,6 +67,7 @@ prv_test_cmd(int32_t argc, char** argv) {
     if (cmd_args_count != argc) {
         printf("Test failed: Expected argument count (%02u) does not match actual argument count (%02u)\r\n",
                (unsigned)cmd_args_count, (unsigned)argc);
+        failed = 1;
         return -1;
     }
 
@@ -75,6 +77,7 @@ prv_test_cmd(int32_t argc, char** argv) {
         if (strcmp(cmd->args_list[idx], argv[idx]) != 0) {
             printf("Test failed: Argument index %02u, value \"%s\" does not match actual argument value \"%s\"\r\n",
                    (unsigned)idx, cmd->args_list[idx], argv[idx]);
+            failed = 1;
             return -1;
         }
     }
@@ -86,15 +89,18 @@ prv_test_cmd(int32_t argc, char** argv) {
  * \brief           Global test run function
  * 
  */
-void
+int
 run_test(void) {
-    lwshell_register_cmd("test", prv_test_cmd, "Test command function\r\n");
+    failed = 0;
 
     printf("Running test...\r\n");
+    lwshell_init();
+    lwshell_register_cmd("test", prv_test_cmd, "Test command function\r\n");
 
     /* Run all commands */
     for (current_cmd_index = 0; current_cmd_index < LWSHELL_ARRAYSIZE(commands); ++current_cmd_index) {
         lwshell_input(commands[current_cmd_index].command, strlen(commands[current_cmd_index].command));
     }
     printf("Tests completed...\r\n");
+    return failed ? -1 : 0;
 }

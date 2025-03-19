@@ -18,7 +18,7 @@
 #endif
 
 void example_minimal(void);
-extern void run_test(void);
+extern int run_test(void);
 
 #if LWSHELL_CFG_USE_OUTPUT
 
@@ -28,7 +28,7 @@ extern void run_test(void);
  * \param[in]       lw: LwSHELL instance
  */
 static void
-shell_output(const char* str, lwshell_t* lw) {
+prv_shell_output(const char* str, lwshell_t* lw) {
     (void)lw;
     printf("%s", str);
     if (*str == '\r') {
@@ -133,16 +133,13 @@ static const lwshell_cmd_t static_cmds[] = {
 /* Program entry point */
 int
 main(void) {
-    /* Init library */
-    lwshell_init();
+    return run_test();
 
+#if 0
 #if LWSHELL_CFG_USE_OUTPUT
     /* Add optional output function for the purpose of the feedback */
-    lwshell_set_output_fn(shell_output);
+    lwshell_set_output_fn(prv_shell_output);
 #endif /* LWSHELL_CFG_USE_OUTPUT */
-
-    /* Run the test */
-    run_test();
 
 #if LWSHELL_CFG_USE_DYNAMIC_COMMANDS
     /* Define shell commands */
@@ -173,4 +170,5 @@ main(void) {
         lwshell_input(str, strlen(str));
     }
     return 0;
+#endif
 }
