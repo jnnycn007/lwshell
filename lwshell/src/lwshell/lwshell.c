@@ -93,7 +93,7 @@ prv_parse_input(lwshell_t* lwobj) {
     size_t s_len;
     char* str;
 
-    /* 
+    /*
      * Check string length and compare with buffer pointer
      * Must be more than `1` character since we have to include end of line
      */
@@ -345,8 +345,10 @@ lwshell_input_ex(lwshell_t* lwobj, const void* in_data, size_t len) {
                 break;
             }
             default: {
+#if LWSHELL_CFG_USE_OUTPUT
                 char str[2] = {p_data[idx], 0};
                 LWSHELL_OUTPUT(lwobj, str);
+#endif /* LWSHELL_CFG_USE_OUTPUT */
                 if (p_data[idx] >= 0x20 && p_data[idx] < 0x7F) {
                     LWSHELL_ADD_CH(lwobj, p_data[idx]);
                 }
