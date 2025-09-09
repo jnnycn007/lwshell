@@ -33,6 +33,8 @@
 		]
 	},
     "build": {
-        "includeDir": "lwshell/src/include"
+        "includeDir": "lwshell/src/include",
+        "srcDir": ".",
+        "srcFilter": "+<lwshell>"
     }
 }
