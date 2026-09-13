@@ -3,7 +3,7 @@ LwSHELL |version| documentation
 
 Welcome to the documentation for version |version|.
 
-LwSHELL is lightweight dynamic memory manager optimized for embedded systems.
+LwSHELL is a lightweight, platform independent, command line shell for embedded systems.
 
 .. image:: static/images/logo.svg
     :align: center
@@ -17,13 +17,18 @@ Features
 ^^^^^^^^
 
 * Written in C (C11), compatible with ``stdint.h`` data types
-* Lightweight commands shell for embedded systems
+* Lightweight command-line shell for embedded systems
 * Platform independent and very easy to port
-
-
-* No dynamic allocation, maximum number of commands assigned at compile time
+* No dynamic (heap) memory allocation, with runtime command registration up to a compile-time configurable limit
+* Optional static, ROM-based command tables as an alternative to runtime registration, to save RAM
+* Supports quoted arguments to allow spaces inside a single parameter
+* Basic line editing with backspace and delete key support
+* Optional ``listcmd`` command to list all registered commands
+* Optional output callback to send shell responses back to the application
+* Multiple independent shell instances through ``_ex`` API functions
+* Helper macros to parse arguments as ``int``, ``long`` or ``double``
 * Highly configurable
-* Simple help-text with `cmd -v` option
+* Simple help-text with ``cmd -h`` option
 * User friendly MIT license
 
 Requirements
